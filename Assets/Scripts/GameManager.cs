@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR 
+using UnityEditor;
+#endif
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +13,6 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject gameOverScreen;
     public GameObject pauseScreen;
-    public GameObject menuScreen;
     public GameObject rulesText;
 
     public AudioSource foodHasEaten;
@@ -21,20 +23,20 @@ public class GameManager : MonoBehaviour
     FoodSpawnManagement foodSpawnManagement;
     SpawnManagement spawnManagement;
     PlayerMovement playerMovement;
+    MainManager mainManager;
 
     public int lives;
     public int score;
     public bool isGameActive;
     public bool isGamePaused;
-    public bool isRulesShown = false;
     // Start is called before the first frame update
     public void Start()
     {
         foodSpawnManagement = GameObject.Find("SpawnerManager").GetComponent<FoodSpawnManagement>();
         spawnManagement = GameObject.Find("SpawnerManager").GetComponent<SpawnManagement>();
         playerMovement = GameObject.Find("Player Male").GetComponent<PlayerMovement>();
-        //foodHasEaten = GetComponent<AudioSource>();
-        //getHit = GetComponent<AudioSource>();
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        GameStart();
     }
 
     // Update is called once per frame
@@ -70,7 +72,6 @@ public class GameManager : MonoBehaviour
         score = 0;
         scoreText.text = "Score: " + score;
         isGameActive = true;
-        menuScreen.gameObject.SetActive(false);
         foodSpawnManagement.GameStart();
         spawnManagement.GameStart();
     }
@@ -90,6 +91,21 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
+        mainManager.mainMenu.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
+    }
+
     public void GameOnPause()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && isGameActive && !isGamePaused) 
@@ -103,20 +119,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             isGamePaused = false;
             pauseScreen.gameObject.SetActive(false);
-        }
-    }
-
-    public void ShowRules()
-    {
-        if (!isRulesShown)
-        {
-            rulesText.gameObject.SetActive(true);
-            isRulesShown = true;
-        }
-        else if (isRulesShown)
-        {
-            rulesText.gameObject.SetActive(false);
-            isRulesShown = false;
         }
     }
 }
