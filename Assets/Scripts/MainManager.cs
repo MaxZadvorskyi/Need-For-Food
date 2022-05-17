@@ -14,6 +14,8 @@ public class MainManager : MonoBehaviour
     [SerializeField] GameObject volumeBar;
     public GameObject mainMenu;
 
+    public int playerType;
+
     private bool isInstructionsShown;
 
     private void Awake()
@@ -59,6 +61,16 @@ public class MainManager : MonoBehaviour
             instructionsText.SetActive(false);
             isInstructionsShown = false;
         }  
+    }
+
+    public void PickMalePlayer()
+    {
+        playerType = 1;
+    }
+
+    public void PickFemalePlayer()
+    {
+        playerType = 2;
     }
 }
 

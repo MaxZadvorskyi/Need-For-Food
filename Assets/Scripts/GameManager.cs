@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject gameOverScreen;
     public GameObject pauseScreen;
-    public GameObject rulesText;
+    public GameObject playerMale;
+    public GameObject playerFemale;
 
     public AudioSource foodHasEaten;
     public AudioSource getHit;
@@ -29,14 +30,32 @@ public class GameManager : MonoBehaviour
     public int score;
     public bool isGameActive;
     public bool isGamePaused;
+
+    Vector3 playerSpawnPosition = new Vector3(0, 0, 0);
+    Quaternion playerSpawnRotation = new Quaternion(0, 0, 0, 0);
+
     // Start is called before the first frame update
     public void Start()
     {
-        foodSpawnManagement = GameObject.Find("SpawnerManager").GetComponent<FoodSpawnManagement>();
-        spawnManagement = GameObject.Find("SpawnerManager").GetComponent<SpawnManagement>();
-        playerMovement = GameObject.Find("Player Male").GetComponent<PlayerMovement>();
-        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
-        GameStart();
+            foodSpawnManagement = GameObject.Find("SpawnerManager").GetComponent<FoodSpawnManagement>();
+            spawnManagement = GameObject.Find("SpawnerManager").GetComponent<SpawnManagement>();
+            mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        
+        if (mainManager.playerType == 1)
+        {
+            Instantiate(playerMale, playerSpawnPosition, playerSpawnRotation);
+            GameStart();
+        }
+        else if (mainManager.playerType == 2)
+        {
+            Instantiate(playerFemale, playerSpawnPosition, playerSpawnRotation);
+            GameStart();
+        }
+        else
+        {
+            return;
+        }
+        playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
