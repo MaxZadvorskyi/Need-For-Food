@@ -7,6 +7,10 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody playerRB;
     Animator playerAnimator;
     GameManager gameManager;
+    MainManager mainManager;
+
+    public AudioSource foodHasEaten;
+    public AudioSource getHit;
 
     public float playerSpeed;
     public float jumpForce;
@@ -25,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
         playerRB = gameObject.GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
     }
 
     // Update is called once per frame
@@ -32,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerMoves();
         MovementRestrictions();
+        SoundsVolumeControl();
     }
     
     // controls the movement of the player by axis and jumping by spacebar
@@ -115,12 +121,12 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Food"))
         {
             Destroy(other.gameObject);
-            gameManager.foodHasEaten.Play();
+            foodHasEaten.Play();
             Debug.Log("You picked up food");
         }
         else if (other.gameObject.CompareTag("Enemy"))
         {
-            gameManager.getHit.Play();
+            getHit.Play();
             gameManager.UpdateLives(1);
             Debug.Log("Auch, you get hit by enemy");
             
@@ -134,6 +140,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void IncreaseDifficulty()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         if (gameManager.score > 75 && gameManager.score < 150)
         {
             playerAnimator.SetFloat("speed", 0.85f);
@@ -150,5 +158,11 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetFloat("speed", 0.4f);
         }
+    }
+
+    public void SoundsVolumeControl()
+    {
+        foodHasEaten.volume = mainManager.gameObject.GetComponent<AudioSource>().volume;
+        getHit.volume = mainManager.gameObject.GetComponent<AudioSource>().volume;
     }
 }

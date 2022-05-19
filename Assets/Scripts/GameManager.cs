@@ -11,13 +11,15 @@ public class GameManager : MonoBehaviour
 {
     public Text livesText;
     public Text scoreText;
+    public Text highScorerName;
+
     public GameObject gameOverScreen;
     public GameObject pauseScreen;
+    public GameObject tryBetterText;
+    public GameObject highScoreOwner;
+
     public GameObject playerMale;
     public GameObject playerFemale;
-
-    public AudioSource foodHasEaten;
-    public AudioSource getHit;
 
     public List<GameObject> foodObjects;
 
@@ -37,24 +39,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-            foodSpawnManagement = GameObject.Find("SpawnerManager").GetComponent<FoodSpawnManagement>();
-            spawnManagement = GameObject.Find("SpawnerManager").GetComponent<SpawnManagement>();
-            mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
-        
-        if (mainManager.playerType == 1)
-        {
-            Instantiate(playerMale, playerSpawnPosition, playerSpawnRotation);
-            GameStart();
-        }
-        else if (mainManager.playerType == 2)
-        {
-            Instantiate(playerFemale, playerSpawnPosition, playerSpawnRotation);
-            GameStart();
-        }
-        else
-        {
-            return;
-        }
+        foodSpawnManagement = GameObject.Find("SpawnerManager").GetComponent<FoodSpawnManagement>();
+        spawnManagement = GameObject.Find("SpawnerManager").GetComponent<SpawnManagement>();
+        mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        GameStartWithCharacter();
         playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
     }
 
@@ -84,6 +72,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void GameStartWithCharacter()
+    {
+        if (mainManager.playerType == 1)
+        {
+            Instantiate(playerMale, playerSpawnPosition, playerSpawnRotation);
+            GameStart();
+        }
+        else if (mainManager.playerType == 2)
+        {
+            Instantiate(playerFemale, playerSpawnPosition, playerSpawnRotation);
+            GameStart();
+        }
+        else
+        {
+            return;
+        }
+    }
+
     public void GameStart()
     {
         lives = 3;
@@ -98,10 +104,17 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if(lives == 0)
+        if(lives == 0 && score < mainManager.HScore)
         {
             isGameActive = false;
-            gameOverScreen.gameObject.SetActive(true);
+            gameOverScreen.SetActive(true);
+            tryBetterText.SetActive(true);
+        }
+        else if (lives == 0 && score > mainManager.HScore)
+        {
+            isGameActive = false;
+            gameOverScreen.SetActive(true);
+            highScoreOwner.SetActive(true);
         }
     }
 
@@ -113,6 +126,7 @@ public class GameManager : MonoBehaviour
     public void BackToMenu()
     {
         SceneManager.LoadScene(0);
+        mainManager.LoadHighScore();
         mainManager.mainMenu.SetActive(true);
     }
 
@@ -139,5 +153,13 @@ public class GameManager : MonoBehaviour
             isGamePaused = false;
             pauseScreen.gameObject.SetActive(false);
         }
+    }
+
+    public void HighScoreSet()
+    {
+        mainManager.HScore = score;
+        mainManager.HScoreName = highScorerName.text;
+        mainManager.SaveHighScore();
+        highScoreOwner.SetActive(false);
     }
 }
