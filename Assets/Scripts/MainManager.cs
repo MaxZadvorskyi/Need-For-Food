@@ -44,6 +44,12 @@ public class MainManager : MonoBehaviour
         DontDestroyOnLoad(mainMenu);
     }
 
+    private void Update()
+    {
+        LoadHighScore();
+        highScoreBar.text = HScoreName + " " + HScore;
+    }
+
     public void PlayClick() //starts a game with start button
     {
         if (!isPlayerChooseShown && !isInstructionsShown)
@@ -99,6 +105,7 @@ public class MainManager : MonoBehaviour
     {
         playerType = 1;
         playerChoose.SetActive(false);
+        isPlayerChooseShown = false;
         mainMenu.SetActive(false);
         SceneManager.LoadScene(1);
     }
@@ -107,6 +114,7 @@ public class MainManager : MonoBehaviour
     {
         playerType = 2;
         playerChoose.SetActive(false);
+        isPlayerChooseShown = false;
         mainMenu.SetActive(false);
         SceneManager.LoadScene(1);
     }

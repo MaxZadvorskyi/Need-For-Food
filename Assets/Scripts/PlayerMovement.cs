@@ -8,9 +8,12 @@ public class PlayerMovement : MonoBehaviour
     Animator playerAnimator;
     GameManager gameManager;
     MainManager mainManager;
+    HitParticle hitParticle;
 
     public AudioSource foodHasEaten;
     public AudioSource getHit;
+
+    public ParticleSystem dirt;
 
     public float playerSpeed;
     public float jumpForce;
@@ -30,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
+        hitParticle = GameObject.Find("Hit Particle").GetComponent<HitParticle>();
     }
 
     // Update is called once per frame
@@ -64,10 +68,14 @@ public class PlayerMovement : MonoBehaviour
             if ((verticalInput != 0) || (horizontalInput != 0))
             {
                 playerAnimator.SetInteger("move", 2);
+                dirt.gameObject.SetActive(true);
+                dirt.Play();
             }
             else
             {
                 playerAnimator.SetInteger("move", 0);
+                dirt.gameObject.SetActive(false);
+                dirt.Pause();
             }
         }
         else
@@ -128,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         {
             getHit.Play();
             gameManager.UpdateLives(1);
+            hitParticle.PlayHitParticle();
             Debug.Log("Auch, you get hit by enemy");
             
             if(gameManager.lives == 0 && gameManager.isGameActive)
