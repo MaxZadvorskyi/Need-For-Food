@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 3525160038869398568}
   - component: {fileID: 5650008837156328459}
   - component: {fileID: 6579450514779102386}
-  - component: {fileID: 3937226278605220259}
+  - component: {fileID: 8003436270006683357}
   m_Layer: 0
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -200,7 +200,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &3937226278605220259
+--- !u!114 &8003436270006683357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,10 +209,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1662226665981755116}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e99580acea274ee4689bc3eb2da081ab, type: 3}
+  m_Script: {fileID: 11500000, guid: eb7c5ee07e3110b48a25051439d1ddb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10000
+  enemyRB: {fileID: 0}
+  upperLowerBorder: 12
+  sidesBorder: 23
+  dietologistSpeed: 20
 --- !u!1 &4896233070430817430
 GameObject:
   m_ObjectHideFlags: 0

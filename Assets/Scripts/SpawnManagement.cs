@@ -7,24 +7,16 @@ public class SpawnManagement : MonoBehaviour
     public GameObject[] enemiesPrefabs;
     GameManager gameManager;
 
-    float SpawnPosUp = 12;
-    float SpawnPosBottom = -7;
-    float spawnPosSides = 18;
-    float spawnHeightY = 0;
+    private float SpawnPosUp = 12;
+    private float SpawnPosBottom = -7;
+    private float spawnPosSides = 18;
+    private float spawnHeightY = 0;
 
-    public float enemiesSpawnIntervale = 1.5f;
+    private float maxSpawnIntervale = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    [SerializeField] private float timeStep;
+    [SerializeField] private float increasingStep;
+    [SerializeField] private float enemiesSpawnIntervale = 1.75f;
 
     Vector3 RandomPositionEnemiesSpawnFromTop() // randomize swapn position from top
     {
@@ -76,7 +68,7 @@ public class SpawnManagement : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemy() // spawns enemy based on time intervales
     {
         while (gameManager.isGameActive)
         {
@@ -85,16 +77,14 @@ public class SpawnManagement : MonoBehaviour
         }
     }
 
-    public IEnumerator IncreaseSpawnRate()
+    public IEnumerator IncreaseSpawnRate() // increasing enemies spawn rate by time
     {
-        yield return new WaitForSeconds(30);
-        enemiesSpawnIntervale = 1.25f;
-        yield return new WaitForSeconds(30);
-        enemiesSpawnIntervale = 1;
-        yield return new WaitForSeconds(30);
-        enemiesSpawnIntervale = 0.75f;
-        yield return new WaitForSeconds(30);
-        enemiesSpawnIntervale = 0.5f;
+        WaitForSeconds increaseRate = new WaitForSeconds(timeStep);
+        while (gameManager.isGameActive && enemiesSpawnIntervale > maxSpawnIntervale)
+        {
+            enemiesSpawnIntervale -= increasingStep;
+            yield return increaseRate;
+        }    
     }
 
     public void GameStart()

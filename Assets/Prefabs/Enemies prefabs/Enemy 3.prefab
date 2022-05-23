@@ -4753,7 +4753,7 @@ GameObject:
   - component: {fileID: 1898434696877380524}
   - component: {fileID: 5913815614924066189}
   - component: {fileID: 2743545192192832888}
-  - component: {fileID: 8498026455212354541}
+  - component: {fileID: 4842069474028778614}
   m_Layer: 0
   m_Name: Enemy 3
   m_TagString: Enemy
@@ -4861,7 +4861,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.086130716, y: 0.17792277, z: 0.25469193}
   m_Center: {x: 0.0027493478, y: 0.10034819, z: 0.030818546}
---- !u!114 &8498026455212354541
+--- !u!114 &4842069474028778614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4870,10 +4870,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1898434696870045540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e99580acea274ee4689bc3eb2da081ab, type: 3}
+  m_Script: {fileID: 11500000, guid: cea29cf790196bd4d978d593dc2edf33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  enemyRB: {fileID: 0}
+  upperLowerBorder: 12
+  sidesBorder: 23
+  dogSpeed: 50
 --- !u!1 &1898434696870046694
 GameObject:
   m_ObjectHideFlags: 0

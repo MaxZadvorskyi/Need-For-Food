@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
         mainManager = GameObject.Find("MainManager").GetComponent<MainManager>();
         GameStartWithCharacter();
         playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
+        spawnManagement.StartCoroutine("IncreaseSpawnRate");
     }
 
     // Update is called once per frame
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour
     {
         GameOnPause();
         playerMovement.IncreaseDifficulty();
-        spawnManagement.StartCoroutine("IncreaseSpawnRate");
     }
 
     public void UpdateLives(int LiveCount)
