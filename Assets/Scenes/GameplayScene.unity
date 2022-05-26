@@ -943,11 +943,8 @@ MonoBehaviour:
   highScoreOwner: {fileID: 118284437}
   playerMale: {fileID: 1353723702140703816, guid: 7ee7da8679b5a0349bf047533cecf3cc, type: 3}
   playerFemale: {fileID: 6947318314836598273, guid: 47567f666e2afed4488e18682d27bf43, type: 3}
-  foodObjects: []
-  lives: 0
   score: 0
   isGameActive: 0
-  isGamePaused: 0
 --- !u!1 &623639927
 GameObject:
   m_ObjectHideFlags: 0
@@ -2610,8 +2607,6 @@ MonoBehaviour:
   - {fileID: 2653692379589592898, guid: 972c154c59063924bae42e78c4a78dbe, type: 3}
   - {fileID: 507561615377557298, guid: 26b3931cc08a16c4096b0da0b64ac09a, type: 3}
   - {fileID: 1441159193956297406, guid: 4070005f8ba743d49882c78d099394cc, type: 3}
-  spawnAreaZ: 5
-  spawnAreaX: 14
 --- !u!1 &1603866610
 GameObject:
   m_ObjectHideFlags: 0

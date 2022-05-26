@@ -28,7 +28,7 @@ public class MainManager : MonoBehaviour
     private void Awake()
     {
         LoadHighScore();
-        highScoreBar.text = HScoreName + " " + HScore;
+        ShowHighscore();
         
         if (instance != null)
         {
@@ -47,10 +47,10 @@ public class MainManager : MonoBehaviour
     private void Update()
     {
         LoadHighScore();
-        highScoreBar.text = HScoreName + " " + HScore;
+        ShowHighscore();
     }
 
-    public void PlayClick() //starts a game with start button
+    private void PlayClick() // lets a player to choose a character and run a game
     {
         if (!isPlayerChooseShown && !isInstructionsShown)
         {
@@ -80,7 +80,7 @@ public class MainManager : MonoBehaviour
 #endif
     }
 
-    public void ShowInstructions() //shows player the rules
+    private void ShowInstructions() // shows player the rules
     {
         if (!isInstructionsShown && !isPlayerChooseShown)
         {
@@ -99,6 +99,11 @@ public class MainManager : MonoBehaviour
             instructionsText.SetActive(false);
             isInstructionsShown = false;
         }
+    }
+
+    private void ShowHighscore() // gives a line with a highscore
+    {
+        highScoreBar.text = HScoreName + " " + HScore;
     }
 
     public void PickMalePlayer()

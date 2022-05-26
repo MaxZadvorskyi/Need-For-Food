@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DietologistBehevior : EnemyBehevior
+public class DietologistBehevior : EnemyBehevior // INHERITANCE
 {
     [SerializeField] private float dietologistSpeed;
     // Update is called once per frame
@@ -11,10 +11,10 @@ public class DietologistBehevior : EnemyBehevior
         EnemyMoving();
     }
 
-    public override void EnemyMoving()
+    public override void EnemyMoving() // POLYMORPHISM
     {
         float speed = dietologistSpeed;
-        enemyRB.AddForce(transform.TransformVector(Vector3.forward) * speed * Time.deltaTime, ForceMode.Impulse); // making objects move in right direction
+        enemyRB.AddForce(transform.TransformVector(Vector3.forward) * speed * Time.deltaTime, ForceMode.Impulse); // makes objects move in right direction
         MovementRestrictions();
     }
 }

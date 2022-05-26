@@ -15,16 +15,11 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem dirt;
 
-    public float playerSpeed;
-    public float jumpForce;
-
+    [SerializeField] private float playerSpeed;
     public int playerType;
 
-    float xBounds = 15;
-    float upperBound = 5;
-    float lowerBound = -4.7f;
-
-    //bool isOnGround;
+    private float xBounds = 10.0f;
+    private float upperLowerBound = 5.0f;
     
     // Start is called before the first frame update
     public void Start()
@@ -44,10 +39,9 @@ public class PlayerMovement : MonoBehaviour
         SoundsVolumeControl();
     }
     
-    // controls the movement of the player by axis and jumping by spacebar
-    void PlayerMoves()
-    {   gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-      
+    void PlayerMoves() // controls the movement of the player (with animations control) 
+    {   gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>(); 
+
         if (gameManager.isGameActive)
         {
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -62,10 +56,9 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // set up a player animation and movement
-
             playerRB.AddForce(playerMoves * playerSpeed * Time.deltaTime);
 
-            if ((verticalInput != 0) || (horizontalInput != 0))
+            if (verticalInput != 0 || horizontalInput != 0 && gameManager.isGameActive)
             {
                 playerAnimator.SetInteger("move", 2);
                 dirt.gameObject.SetActive(true);
@@ -82,27 +75,9 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetInteger("move", 0);
         }
-       
-        
-        // JUMP, JUST DONT KNOW IF I NEED THIS
-        //if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
-        //{
-        //    playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        //    isOnGround = false;
-        //}
     }
-    
-    // asures that player can jump only once, when he is on a ground
-    //void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Ground"))
-    //    {
-    //        isOnGround = true;
-    //    }
-    //}
-
-    // creates restrictions for player movement so he cant go outside camera view
-    void MovementRestrictions()
+       
+    void MovementRestrictions()  // creates restrictions for player movement so he cant go outside camera view
     {
         if (transform.position.x > xBounds)
         {
@@ -112,17 +87,17 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.position = new Vector3(-xBounds, transform.position.y, transform.position.z);
         }
-        else if (transform.position.z > upperBound)
+        else if (transform.position.z > upperLowerBound)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, upperBound);
+            transform.position = new Vector3(transform.position.x, transform.position.y, upperLowerBound);
         }
-        else if (transform.position.z < lowerBound)
+        else if (transform.position.z < -upperLowerBound)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, lowerBound);
+            transform.position = new Vector3(transform.position.x, transform.position.y, -upperLowerBound);
         }
     }
 
-    private void OnTriggerEnter(Collider other) // defining behevior of the player when he colides with other objects
+    private void OnTriggerEnter(Collider other) // defining behevior of the player when he colides with other objects (food and enemies)
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
@@ -132,16 +107,17 @@ public class PlayerMovement : MonoBehaviour
             foodHasEaten.Play();
             Debug.Log("You picked up food");
         }
-        else if (other.gameObject.CompareTag("Enemy"))
+        else if (other.gameObject.CompareTag("Enemy") && gameManager.isGameActive)
         {
             getHit.Play();
             gameManager.UpdateLives(1);
             hitParticle.PlayHitParticle();
             Debug.Log("Auch, you get hit by enemy");
             
-            if(gameManager.lives == 0 && gameManager.isGameActive)
+            if(gameManager.Lives == 0)
             {
                 playerAnimator.SetBool("backward_fall", true);
+                dirt.gameObject.SetActive(false);
                 gameManager.GameOver();
             }
         }
@@ -167,11 +143,11 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetFloat("speed", 0.4f);
         }
-    }
+    }// makes player move slower based on how big his score is
 
     public void SoundsVolumeControl()
     {
         foodHasEaten.volume = mainManager.gameObject.GetComponent<AudioSource>().volume;
         getHit.volume = mainManager.gameObject.GetComponent<AudioSource>().volume;
-    }
+    }// makes that sound effects are chained to a master volume bar
 }

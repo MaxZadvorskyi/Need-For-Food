@@ -7,12 +7,11 @@ public class FoodControl : MonoBehaviour
     public ParticleSystem blowParticle;
     GameManager gameManager;
 
-    public float foodPresenceTime = 7;
-    public int foodPoints;
+    [SerializeField] private float foodPresenceTime = 7.0f;
+    [SerializeField] private int foodPoints;
 
-    Vector3 foodRotation = new Vector3(0, 10, 0);
-
-    float rotationSpeed = 5;
+    private Vector3 foodRotation = new Vector3(0, 10, 0);
+    private float rotationSpeed = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -24,19 +23,24 @@ public class FoodControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(foodRotation * rotationSpeed * Time.deltaTime);
+        FoodConstantRotation();
         if (!gameManager.isGameActive)
         {
             DestroyFood();
         }
     }
 
-    void DestroyFood()
+    private void DestroyFood() // destroys food
     {
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other) // makes explosion while player takes food
+    private void FoodConstantRotation() // gives food a rotation (design purpose only)
+    {
+        transform.Rotate(foodRotation * rotationSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other) // creates explosion while player takes food and updates score
     {
         if (other.gameObject.CompareTag("Player"))
         {

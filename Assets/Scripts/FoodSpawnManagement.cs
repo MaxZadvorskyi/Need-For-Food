@@ -7,24 +7,11 @@ public class FoodSpawnManagement : MonoBehaviour
     public GameObject[] foodPrefabs;
     GameManager gameManager;
 
-    public float spawnAreaZ = 5;
-    public float spawnAreaX = 14;
+    private float spawnAreaZ = 5.0f;
+    private float spawnAreaX = 10.0f;
+    private float delayFoodSpawn = 2.0f;
 
-    float delayFoodSpawn = 2;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    Vector3 FoodSpawnPosition() // randomize spawn position of food 
+    Vector3 FoodSpawnPosition() // randomizes spawning position for food  
     {
         float SpawnPositionZ = Random.Range(-spawnAreaZ, spawnAreaZ);
         float SpawnPositionX = Random.Range(-spawnAreaX, spawnAreaX);
@@ -32,13 +19,13 @@ public class FoodSpawnManagement : MonoBehaviour
         return FoodSpawn;
     }
 
-    void FoodSpawnSelection() // spawn food
+    private void FoodSpawnSelection() // chooses random food type to spawn
     {
         int foodList = Random.Range(0, foodPrefabs.Length);
         Instantiate(foodPrefabs[foodList], FoodSpawnPosition(), foodPrefabs[foodList].transform.rotation);
     }
 
-    IEnumerator SpawnFood()
+    private IEnumerator SpawnFood() // spawns food with time delays while game is active and running
     {
         while (gameManager.isGameActive)
         {

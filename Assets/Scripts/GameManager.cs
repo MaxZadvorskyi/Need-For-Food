@@ -9,32 +9,38 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
-    public Text livesText;
-    public Text scoreText;
+    [SerializeField] private Text livesText;
+    [SerializeField] private Text scoreText;
+   
     public Text highScorerName;
 
-    public GameObject gameOverScreen;
-    public GameObject pauseScreen;
-    public GameObject tryBetterText;
-    public GameObject highScoreOwner;
-
-    public GameObject playerMale;
-    public GameObject playerFemale;
-
-    public List<GameObject> foodObjects;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private GameObject tryBetterText;
+    [SerializeField] private GameObject highScoreOwner;
+    [SerializeField] private GameObject playerMale;
+    [SerializeField] private GameObject playerFemale;
 
     FoodSpawnManagement foodSpawnManagement;
     SpawnManagement spawnManagement;
     PlayerMovement playerMovement;
     MainManager mainManager;
 
-    public int lives;
-    public int score;
-    public bool isGameActive;
-    public bool isGamePaused;
+    private int lives;
+    public int Lives // ENCAPSULATION
+    {
+        get { return lives; }
+        set { lives = value; }
+    } 
 
-    Vector3 playerSpawnPosition = new Vector3(0, 0, 0);
-    Quaternion playerSpawnRotation = new Quaternion(0, 0, 0, 0);
+    public int score;
+
+    private bool isGamePaused;
+
+    public bool isGameActive;
+
+    private Vector3 playerSpawnPosition = new Vector3(0, 0, 0);
+    private Quaternion playerSpawnRotation = new Quaternion(0, 0, 0, 0);
 
     // Start is called before the first frame update
     public void Start()
@@ -54,25 +60,35 @@ public class GameManager : MonoBehaviour
         playerMovement.IncreaseDifficulty();
     }
 
-    public void UpdateLives(int LiveCount)
+    private void ShowLives()
+    {
+       livesText.text = "x " + Lives;
+    }
+
+    private void ShowScore()
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    public void UpdateLives(int LiveCount) // updates lives counter when player takes a hit
     {
         if (isGameActive)
         {
-            lives -= LiveCount;
-            livesText.text = "x " + lives;
+            Lives -= LiveCount;
+            ShowLives();
         }
     }
 
-    public void UpdateScore(int foodPoints)
+    public void UpdateScore(int foodPoints) // updates score counter when player picks up food
     {
         if (isGameActive)
         {
             score += foodPoints;
-            scoreText.text = "Score: " + score;
+            ShowScore();
         }
     }
 
-    public void GameStartWithCharacter()
+    public void GameStartWithCharacter() // defines a character to spawn depending on players choose from main menu
     {
         if (mainManager.playerType == 1)
         {
@@ -90,27 +106,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameStart()
+    public void GameStart() // starts a game and sets a default values of lives and score
     {
-        lives = 3;
-        livesText.text = "x " + lives;
+        Lives = 3;
         score = 0;
-        scoreText.text = "Score: " + score;
+        ShowLives();
+        ShowScore();
         isGameActive = true;
         foodSpawnManagement.GameStart();
         spawnManagement.GameStart();
     }
 
 
-    public void GameOver()
+    public void GameOver() // defines when game is over and is new highscore set or not
     {
-        if(lives == 0 && score < mainManager.HScore)
+        if(Lives == 0 && score < mainManager.HScore)
         {
             isGameActive = false;
             gameOverScreen.SetActive(true);
             tryBetterText.SetActive(true);
         }
-        else if (lives == 0 && score > mainManager.HScore)
+        else if (Lives == 0 && score > mainManager.HScore)
         {
             isGameActive = false;
             gameOverScreen.SetActive(true);
@@ -138,7 +154,7 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    public void GameOnPause()
+    public void GameOnPause() // pauses and unpauses the game
     {
         if (Input.GetKeyDown(KeyCode.Escape) && isGameActive && !isGamePaused) 
         {
@@ -154,7 +170,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void HighScoreSet()
+    public void HighScoreSet() // updates a highscore
     {
         mainManager.HScore = score;
         mainManager.HScoreName = highScorerName.text;
