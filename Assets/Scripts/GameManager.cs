@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver() // defines when game is over and is new highscore set or not
     {
-        if(Lives == 0 && score < mainManager.HScore)
+        if(Lives == 0 && score < mainManager.HScore || Lives == 0 && score == 0)
         {
             isGameActive = false;
             gameOverScreen.SetActive(true);
